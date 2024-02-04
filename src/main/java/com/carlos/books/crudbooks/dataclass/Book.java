@@ -28,14 +28,32 @@ public class Book {
     private String genres; 
     private String publication; 
     private Long pages; 
-
+    
     public Book(DataRegister data){
+        this.id = data.id();
         this.author = data.author();
         this.genres = data.genres();
         this.publication = data.publication(); 
         this.pages = data.pages();
 
     }
-    
+
+    public void updateData(DataUpdate data){
+        if (this.author != null) {
+            this.author = data.author();
+
+        }if (this.genres != null) {
+            this.genres = data.genres();
+
+        }if (this.publication != null) {
+            this.publication = data.publication();
+
+        }if (this.pages > 0) {
+            this.pages = data.pages();
+            
+        }
+
+    }
+
 
 }

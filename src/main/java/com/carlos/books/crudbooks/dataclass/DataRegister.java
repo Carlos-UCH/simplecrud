@@ -8,7 +8,8 @@ public record DataRegister(
     String author, 
     String genres,
     String publication,
-    @NotNull 
+    @NotNull
+    Long id, 
     Long pages) {
 
 }
