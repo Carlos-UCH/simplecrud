@@ -30,7 +30,6 @@ public class Book {
     private Long pages; 
     
     public Book(DataRegister data){
-        this.id = data.id();
         this.author = data.author();
         this.genres = data.genres();
         this.publication = data.publication(); 

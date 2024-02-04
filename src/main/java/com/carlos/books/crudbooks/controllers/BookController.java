@@ -3,6 +3,7 @@ package com.carlos.books.crudbooks.controllers;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.carlos.books.crudbooks.dataclass.Book;
 import com.carlos.books.crudbooks.dataclass.BookRepository;
@@ -36,10 +37,11 @@ public class BookController {
 
 
    @PostMapping
-   public ResponseEntity register(@RequestBody @Valid DataRegister data){
+   public ResponseEntity<DataDatails> register(@RequestBody @Valid DataRegister data, UriComponentsBuilder uriBuilder){
     var book = new Book(data);
     bookRepository.save(book);
-    return ResponseEntity.ok().build();
+    var uri = uriBuilder.path("/book/{id}").buildAndExpand(book.getId()).toUri();
+    return ResponseEntity.created(uri).body(new DataDatails(book));
 
    }
 
@@ -50,9 +52,16 @@ public class BookController {
 
    }
 
+   @GetMapping("/{id}")
+   public ResponseEntity<DataDatails>listid(@PathVariable Long id){
+    var listbyid = bookRepository.getReferenceById(id);
+    return ResponseEntity.ok(new DataDatails(listbyid));
+
+   }
+
    @PutMapping
    @Transactional
-   public ResponseEntity update(@RequestBody @Valid DataUpdate data){
+   public ResponseEntity<DataDatails> update(@RequestBody @Valid DataUpdate data){
    var update = bookRepository.getReferenceById(data.id());
     update.updateData(data);
    return ResponseEntity.ok(new DataDatails(update));
@@ -60,7 +69,7 @@ public class BookController {
    }
 
    @DeleteMapping("/{id}")
-   public ResponseEntity delete(@PathVariable Long id){
+   public ResponseEntity<Void> delete(@PathVariable Long id){
     bookRepository.deleteById(id);
     
     return ResponseEntity.noContent().build();
